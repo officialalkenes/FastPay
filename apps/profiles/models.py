@@ -38,23 +38,33 @@ class Profile(models.Model):
         unspecified = ('Unspecified', 'Unspecified')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile')
+
     profile_pics = models.ImageField(upload_to=upload_to, verbose_name=_("Profile Picture"))
+
     gender = models.CharField(max_length=12, verbose_name=_("Gender"), choices=GenderOptions,
                               help_text=_('format: required, designates gender of user'))
+
     bvn_number = models.PositiveIntegerField(verbose_name=_("Bank Verification Number"),
                                              max_digits=11, min_digits=11,
                                              help_text=_("User's Bank Verification Number"),
                                              blank=True)
+
     date_of_birth = models.DateField(blank=True, verbose_name="Date of Birth")
+
     account_number = models.IntegerField(verbose_name=_("Account Number"), unique=True,
                                          blank=True, null=True)
+
     residential_address = models.CharField(max_length=100, verbose_name=_("Residential Address"),
                                            blank=True)
+
     lga = models.models.CharField(max_length=100, verbose_name=_("Local Government Area"),
                                            blank=True)
+
     state = models.models.CharField(max_length=100, verbose_name=_("State"),
                                            blank=True)
+
     creation_date = models.DateTimeField(auto_now_add=True)
+
     last_updated = models.DateTimeField(auto_now=True)
 
 
