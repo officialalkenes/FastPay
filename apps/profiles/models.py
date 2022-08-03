@@ -27,9 +27,9 @@ class Profile(models.Model):
         passport = ("International Passport", 'International Passport')
 
     class KycLevelOptions(models.IntegerChoices):
-        Level1 = (1, 'Level 1 Registration')
-        Level2 = (2, 'Level 2 Registration')
-        Level3 = (3, 'Level 3 Registration')
+        Level1 = (1, 'Level 1')
+        Level2 = (2, 'Level 2')
+        Level3 = (3, 'Level 3')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile')
     profile_pics = models.ImageField(upload_to=upload_to, verbose_name=_("Profile Picture"))

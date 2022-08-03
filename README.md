@@ -118,6 +118,14 @@ $ pip install -r requirements.txt
 - Digital ocean
 ---
 
+## Verification Method
+- Bvn Verification Method (nibss api)
+- National Identity Number (nimc api)
+- Voter's Card Api (VerifyMe Api)
+- Driver's Licence (appruve.co api)
+- International Passport
+
+
 - **Open** - Anyone can submit content, fix typos & update anything via pull requests
 - **Version control** - Roll back & see the history of any given post
 - **No CMS lock in** - We can easily port to any static site generator
