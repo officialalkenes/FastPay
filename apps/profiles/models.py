@@ -69,6 +69,12 @@ class Profile(models.Model):
 
 
 class KycVerification(models.Model):
+    class ImageUploadStatusOption(models.TextChoices):
+        unavailable = ('unavailable', 'unavailable')
+        pending = ('pending', 'pending')
+        failed = ('failed', 'failed')
+        successful = ('successful', 'successful')
+
     class ValidIdOptions(models.TextChoices):
         nin = ('NIN', 'NIN')
         voters_card = ('Voters Card', 'Voters Card')
@@ -81,23 +87,42 @@ class KycVerification(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name=_("kyc"))
+
     valid_id = models.CharField(max_length=20, verbose_name=_("Valid Identity Card"),
                                 help_text=_("Select a Valid card you own from the options"),
                                 choices=ValidIdOptions, blank=True)
+
     id_num = models.PositiveBigIntegerField(verbose_name=_("Id Unique Digits"),
                                             blank=True, null=True)
+
     front_image = models.ImageField(upload_to=kyc_upload_front, verbose_name=_("Id Front Image"),
                                     help_text=_("format -> jpg, Front Image of Id"), blank=True)
+
     back_image = models.ImageField(upload_to=kyc_upload_front, verbose_name=_("Id Back Image"),
                                     help_text=_("format -> jpg, Back Image of Id"), blank=True)
+
+    accepted_image = models.BooleanField(default=False, verbose_name=_("Check Image Validity"))
+
+    image_status = models.CharField(max_length=10, verbose_name=_("Image Upload Status"),
+                    choices=ImageUploadStatusOption, default=ImageUploadStatusOption.unavailable)
+
     upgraded_status = models.BooleanField(default=False,
                             help_text=_("True If all user's Information are valid and not null"),
                             verbose_name=_("Status Update"))
+
     kyc_level = models.IntegerField(verbose_name=_("Kyc Level Verification"),
-                                 choices=KycLevelOptions, default=KycLevelOptions.1)
+                                 choices=KycLevelOptions, default=KycLevelOptions.Level1)
 
     def __str__(self) -> str:
         return f'{self.user.username}'
+
+    @property
+    def get_kyc_completion_percentage(self):
+        pass
+
+    def save(self, *args, **kwargs):
+        
+        return super().save(self, *args, **kwargs)
 
     class Meta:
         verbose_name = _("Kyc Information")
