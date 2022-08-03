@@ -1,8 +1,8 @@
 from django.contrib.auth.backends import ModelBackend
-from .models import User
+from ..apps.user.models import User
 
 
-class EmailOrPhoneModelBackend(ModelBackend):
+class EmailUsernameOrPhoneModelBackend(ModelBackend):
 
 #This is a ModelBacked that allows authentication with either a phonenumber, username or an email address.
 
