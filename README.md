@@ -40,6 +40,7 @@
 - [Setup](#setup)
 - [Features](#features)
 - [Deployment Options](#deployment-options)
+- [Verifications Apis](#verification-method)
 - [Advanced Formatting tips](#advanced-formatting-tips)
   - [`left` alignment](#left-alignment)
   - [`right` alignment](#right-alignment)
@@ -124,6 +125,7 @@ $ pip install -r requirements.txt
 - Voter's Card Api (VerifyMe Api)
 - Driver's Licence (appruve.co api)
 - International Passport
+- Visa and Master Card Verification (PayStack)
 
 
 - **Open** - Anyone can submit content, fix typos & update anything via pull requests
