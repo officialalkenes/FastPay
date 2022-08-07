@@ -100,7 +100,7 @@ class Withdrawal(models.Model):
         return f'{self.bank.user.username}-{self.amount}'
 
 
-class InappTransaction(models.Model):
+class InappTransFer(models.Model):
 
     class TransactionStatus(models.TextChoices):
         pending = ('pending', 'pending')
@@ -111,6 +111,8 @@ class InappTransaction(models.Model):
 
     account_number = models.ForeignKey(BankAccount, on_delete=models.CASCADE,
                                        related_name=_('transactions'))
+
+    amount = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_("Amount"))
 
     status = models.CharField(max_length=20, verbose_name=_("Transaction Status"),
                               choices=TransactionStatus, default=TransactionStatus.pending)
@@ -124,12 +126,12 @@ class InappTransaction(models.Model):
         verbose_name_plural = _("Transactions")
 
     def __str__(self) -> str:
-        return f'{self.owner.username} - '
+        return f'{self.account_number.user.username} - {self.amount}'
 
 
 class BillType(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=20)
+    slug = models.SlugField(max_length=110)
 
 
 class UtilityBillPayment(models.Model):
