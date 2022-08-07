@@ -102,7 +102,7 @@ class Withdrawal(models.Model):
 
 class InappTransFer(models.Model):
 
-    class TransactionStatus(models.TextChoices):
+    class InappStatus(models.TextChoices):
         pending = ('pending', 'pending')
         successful = ('successful', 'successful')
         failed = ('failed', 'failed')
@@ -115,7 +115,7 @@ class InappTransFer(models.Model):
     amount = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_("Amount"))
 
     status = models.CharField(max_length=20, verbose_name=_("Transaction Status"),
-                              choices=TransactionStatus, default=TransactionStatus.pending)
+                              choices=InappStatus, default=InappStatus.pending)
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -129,11 +129,50 @@ class InappTransFer(models.Model):
         return f'{self.account_number.user.username} - {self.amount}'
 
 
-class BillType(models.Model):
+class OtherBankTransfer(models.Model):
+    class TransferStatus(models.TextChoices):
+        failed = ('failed', 'failed')
+        pending = ('pending', 'pending')
+        processing = ('processing', 'processing')
+        successful = ('successful', 'successful')
+
+
+    account_number = models.ForeignKey(BankAccount, related_name=_('other_transfer'),
+                                       on_delete=models.CASCADE)
+
+    recipient_account_number = models.PositiveBigIntegerField(verbose_name=_("Receivers Account Number"),
+                                                              )
+    bank_name = models.CharField(max_length=100, verbose_name=_("Receivers Bank Name"),
+                                 blank=True)
+
+    status = models.CharField(max_length=20, verbose_name=_("Transaction Status"),
+                              choices=TransferStatus, default=TransferStatus.pending)
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('Other Bank Transfer')
+        verbose_name_plural = _('Other Bank Transfers')
+
+    def __str__(self) -> str:
+        return f'{self.account_number.account_number} to {self.recipient_account_number}'
+
+
+class UtilityType(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=110)
+
+    class Meta:
+        verbose_name = _('Utility Type')
+        verbose_name_plural = _('Utility Types')
+
+    def __str__(self) -> str:
+        return f'{self.account_number.account_number} to {self.recipient_account_number}'
+
 
 
 class UtilityBillPayment(models.Model):
     bank = models.ForeignKey(BankAccount, on_delete=models.PROTECT, related_name=_("withdrawal"))
-    bill_type = models.ForeignKey(BillType, on_delete=models.CASCADE, related_name=_("bill_type"))
+    bill_type = models.ForeignKey(UtilityType, on_delete=models.CASCADE, related_name=_("utility_type"))
+    
