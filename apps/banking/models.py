@@ -6,7 +6,7 @@ from django.test import TransactionTestCase
 
 from django.contrib.auth import get_user_model
 
-from django.db import models
+from django.db import models, transaction, DatabaseError
 
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -192,4 +192,3 @@ class UtilityType(models.Model):
 class UtilityBillPayment(models.Model):
     bank = models.ForeignKey(BankAccount, on_delete=models.PROTECT, related_name=_("withdrawal"))
     bill_type = models.ForeignKey(UtilityType, on_delete=models.CASCADE, related_name=_("utility_type"))
-    
