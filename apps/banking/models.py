@@ -48,7 +48,7 @@ class BankAccount(models.Model):
 class AssociateBank(models.Model):
     """_summary_
     Associate Bank Models. Needed for Direct Deposits and Withdrawal
-    
+
     pass for now. Need further Research
     """
     pass
