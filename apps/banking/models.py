@@ -127,5 +127,11 @@ class InappTransaction(models.Model):
         return f'{self.owner.username} - '
 
 
-class TransactionType(models.Model):
-    pass
+class BillType(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=20)
+
+
+class UtilityBillPayment(models.Model):
+    bank = models.ForeignKey(BankAccount, on_delete=models.PROTECT, related_name=_("withdrawal"))
+    bill_type = models.ForeignKey(BillType, on_delete=models.CASCADE, related_name=_("bill_type"))
