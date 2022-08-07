@@ -15,13 +15,19 @@ User = get_user_model()
 
 
 class BankAccount(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bank')
+    """_summary_
+    Each Registered User has a Bank Account
+    default balance => 0.00
+    auto generated account_number through phone number
+    """
 
-    balance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Account Balance"))
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='bank')
+
+    balance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Account Balance"),
+                                  default=0.00)
 
     account_number = models.IntegerField(verbose_name=_("Account Number"), unique=True,
                                          blank=True, null=True)
-
 
     class Meta:
         verbose_name = _("Bank Account")
@@ -39,6 +45,13 @@ class BankAccount(models.Model):
             self.account_number = int(self.user.phone_number[2:])
         return super().save(self, *args, **kwargs)
 
+class AssociateBank(models.Model):
+    """_summary_
+    Associate Bank Models. Needed for Direct Deposits and Withdrawal
+    
+    pass for now. Need further Research
+    """
+    pass
 
 # class CardVerification(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name=_('card'))
@@ -49,6 +62,9 @@ class BankAccount(models.Model):
 #     cvv = models.PositiveIntegerField(verbose_name=_("Card Verification Value"))
 
 class Deposit(models.Model):
+    """_summary_
+    The deposit models that handles deposits from personal Bank to Mobile Wallet
+    """
     class DepositStatus(models.TextChoices):
         failed = ('failed', 'failed')
         pending = ('pending', 'pending')
@@ -85,6 +101,7 @@ class Withdrawal(models.Model):
 
     amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_("Amount"))
 
+    Withdrawal_to = models.ForeignKey(AssociateBank, on_delete=models.CASCADE, related_name=_("associate_bank"))
     status = models.CharField(max_length=10, verbose_name=_("Deposit Status"),
                               choices=DepositStatus, default=DepositStatus.pending)
 
