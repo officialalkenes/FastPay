@@ -4,8 +4,10 @@ from ..apps.user.models import User
 
 class EmailUsernameOrPhoneModelBackend(ModelBackend):
 
-#This is a ModelBacked that allows authentication with either a phonenumber, username or an email address.
-
+    """
+    This is a Custom ModelBackend Authentication
+    for either a phonenumber, username or an email address.
+    """
     def authenticate(self, username=None, password=None):
         if '@' in username:
             kwargs = {'email': username}
